@@ -1,0 +1,371 @@
+#%RAML 1.0
+baseUri: https://mocksvc.mulesoft.com/mocks/4ecac3bb-9d79-43c4-9a0f-2c3b7a5f4fd7 # 
+version: v1
+title: UserContact System API
+
+types: 
+  Account: !include DataTypes/Account.raml
+  Contact: !include DataTypes/Contact.raml
+  User: !include DataTypes/User.raml
+
+/account:
+  get:
+    description: Get all accounts
+    responses:
+      200:
+        body: 
+            application/json:
+              type: Account[]
+              example: !include Examples/accountListExample.raml
+      400:
+        body: 
+            application/json:
+              example: {"message" : "Error processing request"}
+      500:
+        body: 
+            application/json:
+              example: {"message" : "Service unavailable"}
+  post:
+    body:
+      application/json:
+        example: !include Examples/accountExample.raml
+    responses:
+      201:
+        body:
+          application/json:
+            example:     
+              {message: "Account added"}
+      400:
+        body: 
+            application/json:
+              example: {"message" : "Error processing request"}
+      500:
+        body: 
+            application/json:
+              example: {"message" : "Service unavailable"}
+  /{accountId}:
+    get:
+      description: Get a specific account by Id
+      responses:
+        200:
+          body: 
+              application/json:
+                type: Account
+                example: !include Examples/accountExample.raml
+        400:
+          body: 
+              application/json:
+                example: {"message" : "Error processing request"}
+        500:
+          body: 
+              application/json:
+                example: {"message" : "Service unavailable"}
+    patch:
+      body:
+        application/json:
+          example: !include Examples/accountExample.raml
+      responses:
+        201:
+          body:
+            application/json:
+              example:     
+                {message: "Account updated"}
+        400:
+          body: 
+              application/json:
+                example: {"message" : "Error processing request"}
+        500:
+          body: 
+              application/json:
+                example: {"message" : "Service unavailable"}
+    /contact:
+      get: 
+        queryParameters:
+          email: 
+            type: string
+            required: false
+        description: Get all contacts
+        responses:
+          200:
+            body: 
+                application/json:
+                  type: Contact[]
+                  example: !include Examples/contactListExample.raml
+          400:
+            body: 
+                application/json:
+                  example: {"message" : "Error processing request"}
+          500:
+            body: 
+                application/json:
+                  example: {"message" : "Service unavailable"}
+      post:
+        body:
+          application/json:
+            example: !include Examples/contactExample.raml
+        responses:
+          201:
+            body:
+              application/json:
+                example:     
+                  {message: "Contact added"}
+          400:
+            body: 
+                application/json:
+                  example: {"message" : "Error processing request"}
+          500:
+            body: 
+                application/json:
+                  example: {"message" : "Service unavailable"}
+
+      /{contactId}:
+        get:
+          description: Get a specific contact by Id
+          responses:
+            200:
+              body: 
+                  application/json:
+                    type: Contact
+                    example: !include Examples/contactExample.raml
+            400:
+              body: 
+                  application/json:
+                    example: {"message" : "Error processing request"}
+            500:
+              body: 
+                  application/json:
+                    example: {"message" : "Service unavailable"}
+        patch:
+          body:
+            application/json:
+              example: !include Examples/contactExample.raml
+          responses:
+            201:
+              body:
+                application/json:
+                  example:     
+                    {message: "Contact updated"}
+            400:
+              body: 
+                  application/json:
+                    example: {"message" : "Error processing request"}
+            500:
+              body: 
+                  application/json:
+                    example: {"message" : "Service unavailable"}
+/contact:
+  get:
+    description: Get all contacts
+    responses:
+      200:
+        body: 
+            application/json:
+              type: Contact[]
+              example: !include Examples/contactListExample.raml
+      400:
+        body: 
+            application/json:
+              example: {"message" : "Error processing request"}
+      500:
+        body: 
+            application/json:
+              example: {"message" : "Service unavailable"}
+  post:
+    body:
+      application/json:
+        example: !include Examples/contactExample.raml
+    responses:
+      201:
+        body:
+          application/json:
+            example:     
+              {message: "Contact added"}
+      400:
+        body: 
+            application/json:
+              example: {"message" : "Error processing request"}
+      500:
+        body: 
+            application/json:
+              example: {"message" : "Service unavailable"}
+
+
+  /{contactId}:
+    get:
+      description: Get a specific contact by Id
+      responses:
+        200:
+          body: 
+              application/json:
+                type: Contact
+                example: !include Examples/contactExample.raml
+        400:
+          body: 
+              application/json:
+                example: {"message" : "Error processing request"}
+        500:
+          body: 
+              application/json:
+                example: {"message" : "Service unavailable"} 
+    patch:
+      body:
+        application/json:
+          example: !include Examples/contactExample.raml
+      responses:
+        201:
+          body:
+            application/json:
+              example:     
+                {message: "Contact updated"}
+        400:
+          body: 
+              application/json:
+                example: {"message" : "Error processing request"}
+        500:
+          body: 
+              application/json:
+                example: {"message" : "Service unavailable"}
+
+
+/user:
+  get:
+    description: Get all users
+    responses:
+      200:
+        body: 
+            application/json:
+              type: User[]
+              example: !include Examples/userListExample.raml
+      400:
+        body: 
+            application/json:
+              example: {"message" : "Error processing request"}
+      500:
+        body: 
+            application/json:
+              example: {"message" : "Service unavailable"}
+
+  post:
+    body:
+      application/json:
+        example: !include Examples/userExample.raml
+    responses:
+      201:
+        body:
+          application/json:
+            example:     
+              {message: "User added"}
+      400:
+        body: 
+            application/json:
+              example: {"message" : "Error processing request"}
+      500:
+        body: 
+            application/json:
+              example: {"message" : "Service unavailable"}
+  /{userId}:
+    get:
+      description: Get a specific user by Id
+      responses:
+        200:
+          body: 
+              application/json:
+                type: User
+                example: !include Examples/userExample.raml
+        400:
+          body: 
+              application/json:
+                example: {"message" : "Error processing request"}
+        500:
+          body: 
+              application/json:
+                example: {"message" : "Service unavailable"}
+    patch:
+      body:
+        application/json:
+          example: !include Examples/userExample.raml
+      responses:
+        201:
+          body:
+            application/json:
+              example:     
+                {message: "User updated"}
+        400:
+          body: 
+              application/json:
+                example: {"message" : "Error processing request"}
+        500:
+          body: 
+              application/json:
+                example: {"message" : "Service unavailable"}
+    /contact:
+      get:
+        description: Get all contacts
+        responses:
+          200:
+            body: 
+                application/json:
+                  type: Contact[]
+                  example: !include Examples/contactListExample.raml
+          400:
+            body: 
+                application/json:
+                  example: {"message" : "Error processing request"}
+          500:
+            body: 
+                application/json:
+                  example: {"message" : "Service unavailable"}
+      post:
+        body:
+          application/json:
+            example: !include Examples/contactExample.raml
+        responses:
+          201:
+            body:
+              application/json:
+                example:     
+                  {message: "Contact added"}
+          400:
+            body: 
+                application/json:
+                  example: {"message" : "Error processing request"}
+          500:
+            body: 
+                application/json:
+                  example: {"message" : "Service unavailable"}
+
+      /{contactId}:
+        get:
+          description: Get a specific contact by Id
+          responses:
+            200:
+              body: 
+                  application/json:
+                    type: Contact
+                    example: !include Examples/contactExample.raml
+            400:
+              body: 
+                  application/json:
+                    example: {"message" : "Error processing request"}
+            500:
+              body: 
+                  application/json:
+                    example: {"message" : "Service unavailable"}
+        patch:
+          body:
+            application/json:
+              example: !include Examples/contactExample.raml
+          responses:
+            201:
+              body:
+                application/json:
+                  example:     
+                    {message: "Contact updated"}
+            400:
+              body: 
+                  application/json:
+                    example: {"message" : "Error processing request"}
+            500:
+              body: 
+                  application/json:
+                    example: {"message" : "Service unavailable"}
