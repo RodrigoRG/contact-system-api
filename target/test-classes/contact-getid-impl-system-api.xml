@@ -1,15 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:spring="http://www.springframework.org/schema/beans" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd">
+http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
     <sfdc:config name="Salesforce__Basic_Authentication" username="rresendiz@avanxo.com.cappocdev" password="avanxo18" securityToken="PRWBzp5iZSMEJPOm1LuIO5Ae" url="https://test.salesforce.com/services/Soap/u/37.0" doc:name="Salesforce: Basic Authentication"/>
-    <sub-flow name="Contact_Id_get">
+    <sub-flow name="getContactIdFromURI">
         <set-variable variableName="userId" value="#[message.inboundProperties.'http.uri.params']" doc:name="Set user Id Variable"/>
+    </sub-flow>
+    <sub-flow name="Contact_Id_get">
+        <flow-ref name="getContactIdFromURI" doc:name="Flow Reference"/>
         <sfdc:query config-ref="Salesforce__Basic_Authentication" query="dsql:SELECT Active_Resource__c,CreatedDate,Email,FirstName,Id,LastName,Name,Reports_To_formula__c FROM Contact WHERE Id = '#[flowVars.contactId]'" doc:name="Salesforce"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+    </sub-flow>
+    <sub-flow name="contact_Id_Patch">
+        <flow-ref name="getContactIdFromURI" doc:name="Copy_of_Flow Reference"/>
+        <dw:transform-message doc:name="Transform Message" metadata:id="98abee43-bb56-46bc-aa5b-501d3895e2fe">
+            <dw:input-payload mimeType="application/json"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+[{
+	Id: flowVars.userId,
+	LastName: payload.LastName,
+	FirstName: payload.FirstName,
+	Name: payload.Name,
+	Email: payload.Email,
+	Active_Resource__c: payload.Active_Resource__c as :boolean
+}]]]></dw:set-payload>
+        </dw:transform-message>
+        <sfdc:update config-ref="Salesforce__Basic_Authentication" type="Contact" doc:name="Salesforce">
+            <sfdc:objects ref="#[payload]"/>
+        </sfdc:update>
         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
     </sub-flow>
 </mule>

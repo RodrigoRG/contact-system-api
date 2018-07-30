@@ -22,6 +22,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <flow name="patch:/contact/{contactId}:usercontact-system-api-config">
         <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
         <set-payload value="{&#xA;&quot;message&quot; : &quot;Contact updated&quot;&#xA;}" doc:name="Set Payload"/>
+        <flow-ref name="contact_Id_Patch" doc:name="Flow Reference"/>
     </flow>
     <flow name="patch:/account/{accountId}/contact/{contactId}:usercontact-system-api-config">
         <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
