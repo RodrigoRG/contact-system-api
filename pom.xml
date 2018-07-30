@@ -141,6 +141,19 @@
             <artifactId>mule-module-sfdc</artifactId>
             <version>8.6.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/jul-to-slf4j -->
+	<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>jul-to-slf4j</artifactId>
+		    <version>1.7.5</version>
+		</dependency>
+        
+    <dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-module-spring-config</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 	<repositories>
@@ -161,6 +174,18 @@
             <name>MuleEE Releases Repository</name>
             <url>https://repository-master.mulesoft.org/nexus/content/repositories/releases-ee/</url>
         </repository>
+    <repository>
+		    <id>Nexus</id>
+		    <name>Nexus Public Repository</name>
+		    <url>https://repository-master.mulesoft.org/nexus/content/groups/public/</url>
+		    <layout>default</layout>
+ 		</repository>
+ 	<repository>
+       <id>mulesoft-snapshots</id>
+       <name>MuleSoft Snapshots Repository</name>
+       <url>http://repository.mulesoft.org/snapshots/</url>
+       <layout>default</layout>
+   </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
