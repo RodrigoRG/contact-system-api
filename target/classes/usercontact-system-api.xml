@@ -76,8 +76,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <set-payload value="{&#xA;&quot;message&quot; : &quot;Contact added&quot;&#xA;}" doc:name="Set Payload"/>
     </flow>
     <flow name="post:/contact:usercontact-system-api-config">
-        <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
-        <set-payload value="{&#xA;&quot;message&quot; : &quot;Contact added&quot;&#xA;}" doc:name="Set Payload"/>
+        <flow-ref name="Contact_Post" doc:name="Post Contact Flow Reference"/>
+
     </flow>
     <flow name="post:/user/{userId}/contact:usercontact-system-api-config">
         <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
