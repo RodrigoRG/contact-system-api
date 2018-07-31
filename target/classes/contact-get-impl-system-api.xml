@@ -11,12 +11,14 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
         <set-variable variableName="email" value="#[message.inboundProperties.'http.query.params'.email]" doc:name="set email Variable"/>
         <choice doc:name="Choice">
             <when expression="#[flowVars.email==empty]">
-                <sfdc:query config-ref="Salesforce__Basic_Authentication" query="dsql:SELECT Active_Resource__c,CreatedDate,Email,FirstName,Id,LastName,Name,Reports_To_formula__c FROM Contact" doc:name="Salesforce"/>
+                <sfdc:query config-ref="Salesforce__Basic_Authentication" query="dsql:SELECT Active_Resource__c,CreatedDate,Email,FirstName,Id,LastName,Name,Reports_To_formula__c,pse__Salesforce_User__r.username FROM Contact" doc:name="Salesforce"/>
+
             </when>
             <otherwise>
-                <sfdc:query config-ref="Salesforce__Basic_Authentication" query="dsql:SELECT Active_Resource__c,CreatedDate,Email,FirstName,Id,LastName,Name,Reports_To_formula__c FROM Contact WHERE Email='#[flowVars.email]'" doc:name="Salesforce"/>
+                <sfdc:query config-ref="Salesforce__Basic_Authentication" query="dsql:SELECT Active_Resource__c,CreatedDate,Email,FirstName,Id,LastName,Name,Reports_To_formula__c,pse__Salesforce_User__r.username FROM Contact WHERE Email='#[flowVars.email]'" doc:name="Salesforce"/>
             </otherwise>
         </choice>
+        <flow-ref name="sfdc-get-transform-message" doc:name="sfdc-get-transform-message"/>
         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
     </sub-flow>
 </mule>
