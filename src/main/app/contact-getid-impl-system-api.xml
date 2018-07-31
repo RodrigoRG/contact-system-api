@@ -14,8 +14,27 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
     </sub-flow>
     <sub-flow name="Contact_Id_get">
         <flow-ref name="getContactIdFromURI" doc:name="Flow Reference"/>
-        <sfdc:query config-ref="Salesforce__Basic_Authentication" query="dsql:SELECT Active_Resource__c,CreatedDate,Email,FirstName,Id,LastName,Name,Reports_To_formula__c FROM Contact WHERE Id = '#[flowVars.contactId]'" doc:name="Salesforce"/>
+        <sfdc:query config-ref="Salesforce__Basic_Authentication" query="dsql:SELECT Active_Resource__c,CreatedDate,Email,FirstName,Id,LastName,Name,Reports_To_formula__c,pse__Salesforce_User__r.Username FROM Contact WHERE Id = '#[flowVars.contactId]'" doc:name="Salesforce"/>
+        <flow-ref name="sfdc-get-transform-message" doc:name="sfdc-get-transform-message"/>
         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+    </sub-flow>
+    <sub-flow name="sfdc-get-transform-message">
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+	payload map ({
+		ID: $.Id,
+	creationDate: $.CreatedDate,
+	email: $.Email,
+	firstName: $.FirstName,
+	isActive: $.Active_Resource__c,
+	lastName: $.LastName,
+	reportsTo: $.Reports_To_formula__c,
+	username: $.pse__Salesforce_User__r.Username
+	})
+]]></dw:set-payload>
+        </dw:transform-message>
     </sub-flow>
     <sub-flow name="contact_Id_Patch">
         <flow-ref name="getContactIdFromURI" doc:name="Copy_of_Flow Reference"/>
